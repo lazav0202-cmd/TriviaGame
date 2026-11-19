@@ -92,3 +92,7 @@ The model is set by the `AI_MODEL` constant in `src/ai.hpp`.
 ## Versions
 
 Every major update gets a version number and a git tag (`v1.0.0`, `v2.0.0`, ...). See [CHANGELOG.md](CHANGELOG.md) for what changed.
+
+---
+
+Developed with AI assistance (Claude).
