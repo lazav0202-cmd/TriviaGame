@@ -1,0 +1,22 @@
+# IMPORTANT: the API key and personal progress must never end up in the repository.
+api_key.txt
+save.txt
+
+# Build output
+trivia
+trivia.exe
+*.o
+*.obj
+*.exe
+*.dll
+build/
+
+# Optional font placed next to the game locally
+font.ttf
+
+# Editors and OS files
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
