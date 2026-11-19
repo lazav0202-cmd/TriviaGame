@@ -96,6 +96,9 @@ struct SoundBank {
     Sound wrong{};
     Sound coin{};
     Sound buy{};
+    Sound hover{};   // тихий "тик" при наведении на кнопку
+    Sound whoosh{};  // переход между вопросами
+    Sound lose{};    // конец игры
     std::vector<Sound> music;  // музыкальные темы, номер совпадает с магазином
 };
 
@@ -115,6 +118,11 @@ inline SoundBank CreateSoundBank() {
     bank.coin = SynthesizeSound({{E5, 0.07f}, {A5, 0.07f}, {B5, 0.07f}, {E6, 0.30f}},
                                 Waveform::Sine, 0.5f);
     bank.buy = SynthesizeSound({{A5, 0.06f}, {REST, 0.03f}, {E6, 0.30f}}, Waveform::Triangle, 0.5f);
+    bank.hover = SynthesizeSound({{A5, 0.03f}}, Waveform::Sine, 0.25f);
+    bank.whoosh = SynthesizeSound({{C4, 0.03f}, {E4, 0.03f}, {G4, 0.03f}, {C5, 0.06f}},
+                                  Waveform::Triangle, 0.3f);
+    bank.lose = SynthesizeSound({{G4, 0.18f}, {E4, 0.18f}, {C4, 0.18f}, {G3, 0.55f}},
+                                Waveform::Triangle, 0.5f);
 
     // Музыкальные темы (каждая зацикливается).
     // 0 - "Спокойная"
@@ -143,6 +151,9 @@ inline void DestroySoundBank(SoundBank& bank) {
     UnloadSound(bank.wrong);
     UnloadSound(bank.coin);
     UnloadSound(bank.buy);
+    UnloadSound(bank.hover);
+    UnloadSound(bank.whoosh);
+    UnloadSound(bank.lose);
     for (Sound& track : bank.music) {
         UnloadSound(track);
     }

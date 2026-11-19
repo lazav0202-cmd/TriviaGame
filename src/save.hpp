@@ -37,6 +37,8 @@ struct SaveData {
     float musicVolume = 0.5f;    // громкость музыки 0..1
     float sfxVolume = 0.8f;      // громкость звуков 0..1
     bool effects = true;         // включены ли частицы и тряска экрана
+    bool fullscreen = true;      // true - полный экран, false - обычное окно
+    int bestStreak = 0;          // рекорд: сколько вопросов подряд отвечено верно
 };
 
 // Файл сохранения лежит рядом с программой.
@@ -64,6 +66,7 @@ void StringToFlags(const std::string& text, std::array<bool, N>& flags) {
 // Приводит данные к допустимым значениям (если файл испортили вручную).
 inline void FixSaveData(SaveData& d) {
     d.coins = std::max(d.coins, 0);
+    d.bestStreak = std::max(d.bestStreak, 0);
     d.correctProgress = std::clamp(d.correctProgress, 0, CORRECT_PER_REWARD - 1);
     d.musicVolume = std::clamp(d.musicVolume, 0.0f, 1.0f);
     d.sfxVolume = std::clamp(d.sfxVolume, 0.0f, 1.0f);
@@ -90,6 +93,8 @@ inline void SaveGame(const SaveData& d) {
     out << "musicVolume " << d.musicVolume << "\n";
     out << "sfxVolume " << d.sfxVolume << "\n";
     out << "effects " << (d.effects ? 1 : 0) << "\n";
+    out << "fullscreen " << (d.fullscreen ? 1 : 0) << "\n";
+    out << "best " << d.bestStreak << "\n";
 }
 
 // Читает прогресс из файла. Если файла нет - возвращает значения по умолчанию.
@@ -124,6 +129,12 @@ inline SaveData LoadGame() {
             int value = 1;
             in >> value;
             d.effects = (value != 0);
+        } else if (key == "fullscreen") {
+            int value = 1;
+            in >> value;
+            d.fullscreen = (value != 0);
+        } else if (key == "best") {
+            in >> d.bestStreak;
         } else {
             std::string ignored;  // неизвестный ключ - пропускаем строку
             std::getline(in, ignored);
